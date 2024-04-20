@@ -7,9 +7,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.entities.Estado;
 import br.com.brencorp.consman.entities.Projeto;
+import br.com.brencorp.consman.repositories.CatRepository;
 import br.com.brencorp.consman.repositories.CidadeRepository;
 import br.com.brencorp.consman.repositories.EstadoRepository;
 import br.com.brencorp.consman.repositories.ProjetoRepository;
@@ -26,9 +28,19 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private ProjetoRepository projetoRepository;
+	
+	@Autowired
+	private CatRepository catRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Cat cat1 = new Cat(null, "Descrição Cat1");
+		Cat cat2 = new Cat(null, "Descrição Cat2");
+		Cat cat3 = new Cat(null, "Descrição Cat3");
+		Cat cat4 = new Cat(null, "Descrição Cat4");
+		
+		catRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4));
 		
 		Projeto p1 = new Projeto(null, "Descrição projeto 1");
 		Projeto p2 = new Projeto(null, "Descrição projeto 2");
