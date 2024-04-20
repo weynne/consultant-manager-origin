@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Profile;
 
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.entities.Estado;
+import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.CidadeRepository;
 import br.com.brencorp.consman.repositories.EstadoRepository;
+import br.com.brencorp.consman.repositories.ProjetoRepository;
 
 @Configuration
 @Profile("test")
@@ -21,9 +23,19 @@ public class TestConfig implements CommandLineRunner {
 
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private ProjetoRepository projetoRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Projeto p1 = new Projeto(null, "Descrição projeto 1");
+		Projeto p2 = new Projeto(null, "Descrição projeto 2");
+		Projeto p3 = new Projeto(null, "Descrição projeto 3");
+		Projeto p4 = new Projeto(null, "Descrição projeto 4");
+		
+		projetoRepository.saveAll(Arrays.asList(p1, p2, p3, p4));
 
 		Estado e1 = new Estado(null, "PE");
 		Estado e2 = new Estado(null, "PB");
@@ -31,7 +43,7 @@ public class TestConfig implements CommandLineRunner {
 		Cidade c1 = new Cidade(null, "João Pessoa", e2);
 		Cidade c2 = new Cidade(null, "Recife", e1);
 		Cidade c3 = new Cidade(null, "Campina Grande", e2);
-		Cidade c4 = new Cidade(null, "Olinda", e1);
+		Cidade c4 = new Cidade(null, "Caruaru", e1);
 
 		estadoRepository.saveAll(Arrays.asList(e1, e2));
 
