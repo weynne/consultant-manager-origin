@@ -10,11 +10,13 @@ import org.springframework.context.annotation.Profile;
 import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.entities.Estado;
+import br.com.brencorp.consman.entities.FormacaoAcademica;
 import br.com.brencorp.consman.entities.Profissao;
 import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.CatRepository;
 import br.com.brencorp.consman.repositories.CidadeRepository;
 import br.com.brencorp.consman.repositories.EstadoRepository;
+import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
 import br.com.brencorp.consman.repositories.ProfissaoRepository;
 import br.com.brencorp.consman.repositories.ProjetoRepository;
 
@@ -36,9 +38,19 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private ProfissaoRepository profissaoRepository;
+	
+	@Autowired
+	private FormacaoAcademicaRepository formacaoAcademicaRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		FormacaoAcademica f1 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
+		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", 2023);
+		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras", "UNICAP", "Licenciatura", 2010);
+		FormacaoAcademica f4 = new FormacaoAcademica(null, "Gestão de Tecnologia da Informação", "CESAR School", "Tecnólogo", 2025);
+		
+		formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
 		
 		Profissao prof1 = new Profissao(null, "Desenvolvedor", "Backend");
 		Profissao prof2 = new Profissao(null, "Desenvolvedor", "Frontend");
