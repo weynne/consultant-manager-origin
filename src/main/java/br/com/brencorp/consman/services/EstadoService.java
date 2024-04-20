@@ -11,16 +11,16 @@ import br.com.brencorp.consman.repositories.EstadoRepository;
 
 @Service
 public class EstadoService {
-	
+
 	@Autowired
 	private EstadoRepository repository;
 
-	public List<Estado> findAll(){
+	public List<Estado> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Estado findById(Long id) {
-		Optional <Estado> obj = repository.findById(id);
+		Optional<Estado> obj = repository.findById(id);
 		return obj.get();
 	}
 }
