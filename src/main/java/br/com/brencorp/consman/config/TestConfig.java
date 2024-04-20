@@ -10,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.entities.Estado;
+import br.com.brencorp.consman.entities.Profissao;
 import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.CatRepository;
 import br.com.brencorp.consman.repositories.CidadeRepository;
 import br.com.brencorp.consman.repositories.EstadoRepository;
+import br.com.brencorp.consman.repositories.ProfissaoRepository;
 import br.com.brencorp.consman.repositories.ProjetoRepository;
 
 @Configuration
@@ -31,9 +33,19 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private CatRepository catRepository;
+	
+	@Autowired
+	private ProfissaoRepository profissaoRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		Profissao prof1 = new Profissao(null, "Desenvolvedor", "Backend");
+		Profissao prof2 = new Profissao(null, "Desenvolvedor", "Frontend");
+		Profissao prof3 = new Profissao(null, "Engenheiro de Produção", "Dados");
+		Profissao prof4 = new Profissao(null, "Biólogo", "Aves Silvestres");
+		
+		profissaoRepository.saveAll(Arrays.asList(prof1, prof2, prof3, prof4));
 		
 		Cat cat1 = new Cat(null, "Descrição Cat1");
 		Cat cat2 = new Cat(null, "Descrição Cat2");
