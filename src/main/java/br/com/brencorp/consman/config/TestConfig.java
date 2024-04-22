@@ -9,12 +9,14 @@ import org.springframework.context.annotation.Profile;
 
 import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.entities.Cidade;
+import br.com.brencorp.consman.entities.Consultor;
 import br.com.brencorp.consman.entities.Estado;
 import br.com.brencorp.consman.entities.FormacaoAcademica;
 import br.com.brencorp.consman.entities.Profissao;
 import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.CatRepository;
 import br.com.brencorp.consman.repositories.CidadeRepository;
+import br.com.brencorp.consman.repositories.ConsultorRepository;
 import br.com.brencorp.consman.repositories.EstadoRepository;
 import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
 import br.com.brencorp.consman.repositories.ProfissaoRepository;
@@ -41,10 +43,13 @@ public class TestConfig implements CommandLineRunner {
 	
 	@Autowired
 	private FormacaoAcademicaRepository formacaoAcademicaRepository;
-
+	
+	@Autowired
+	private ConsultorRepository consultorRepository;
+	
 	@Override
 	public void run(String... args) throws Exception {
-		
+				
 		FormacaoAcademica f1 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
 		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", 2023);
 		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras", "UNICAP", "Licenciatura", 2010);
@@ -84,7 +89,24 @@ public class TestConfig implements CommandLineRunner {
 		estadoRepository.saveAll(Arrays.asList(e1, e2));
 
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
-
+		
+		Consultor cons1 = new Consultor(null, "00011122290", null, "Weynne Guimarães", "8188888888", "wjgcl@cesar.school", "24-09-1991", c2);
+		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "8199999999", "pcs2@cesar.school", "01-11-1999", c4);
+		
+		consultorRepository.saveAll(Arrays.asList(cons1, cons2));
+		
+		cons1.getCat().add(cat4);
+		cons1.getFormacao().add(f3);
+		cons1.getProfissao().add(prof2);
+		cons1.getProjeto().add(p1);
+		
+		cons2.getCat().add(cat1);
+		cons2.getFormacao().add(f1);
+		cons2.getProfissao().add(prof3);
+		cons2.getProjeto().add(p2);
+		
+		consultorRepository.saveAll(Arrays.asList(cons1, cons2));
+		
 	}
 
 }

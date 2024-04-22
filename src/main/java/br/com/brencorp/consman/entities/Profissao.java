@@ -1,12 +1,15 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +22,9 @@ public class Profissao implements Serializable {
 	private Long id;
 	private String nome;
 	private String area;
+	
+	@ManyToMany(mappedBy = "profissoes")
+	private Set<Consultor> consultores = new HashSet<>();
 
 	public Profissao() {
 	}
@@ -52,6 +58,10 @@ public class Profissao implements Serializable {
 
 	public void setArea(String area) {
 		this.area = area;
+	}
+
+	public Set<Consultor> getConsultores() {
+		return consultores;
 	}
 
 	@Override

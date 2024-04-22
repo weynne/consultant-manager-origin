@@ -1,12 +1,15 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,6 +24,9 @@ public class FormacaoAcademica implements Serializable {
 	private String instituicao;
 	private String tipo;
 	private Integer anoConclusao;
+
+	@ManyToMany(mappedBy = "formacoes")
+	private Set<Consultor> consultores = new HashSet<>();
 
 	public FormacaoAcademica() {
 	}
@@ -72,6 +78,10 @@ public class FormacaoAcademica implements Serializable {
 
 	public void setAnoConclusao(Integer anoConclusao) {
 		this.anoConclusao = anoConclusao;
+	}
+
+	public Set<Consultor> getConsultores() {
+		return consultores;
 	}
 
 	@Override
