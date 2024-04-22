@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,7 @@ public class Cat implements Serializable {
 	private Long id;
 	private String descricao;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "cat")
 	private Set<Consultor> consultores = new HashSet<>();
 

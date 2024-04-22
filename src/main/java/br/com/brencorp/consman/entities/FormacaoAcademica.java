@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,7 @@ public class FormacaoAcademica implements Serializable {
 	private String tipo;
 	private Integer anoConclusao;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "formacoes")
 	private Set<Consultor> consultores = new HashSet<>();
 
