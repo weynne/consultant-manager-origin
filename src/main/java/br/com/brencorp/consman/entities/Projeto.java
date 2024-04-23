@@ -1,9 +1,9 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +26,7 @@ public class Projeto implements Serializable {
 	
 	@JsonIgnore
 	@ManyToMany(mappedBy = "projetos")
-	private Set<Consultor> consultores = new HashSet<>();
+	private List<Consultor> consultores = new ArrayList<>();
 	
 	public Projeto() {
 	}
@@ -53,7 +53,7 @@ public class Projeto implements Serializable {
 		this.descricao = descricao;
 	}
 	
-	public Set<Consultor> getConsultores() {
+	public List<Consultor> getConsultores() {
 		return consultores;
 	}
 

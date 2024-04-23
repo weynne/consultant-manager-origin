@@ -1,9 +1,9 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -32,7 +32,7 @@ public class Cidade implements Serializable{
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "cidade")
-	private Set<Consultor> consultores = new HashSet<>();
+	private List<Consultor> consultores = new ArrayList<>();
 
 	public Cidade() {
 	}
@@ -68,7 +68,7 @@ public class Cidade implements Serializable{
 		this.estado = estado;
 	}
 
-	public Set<Consultor> getConsultores() {
+	public List<Consultor> getConsultores() {
 		return consultores;
 	}
 

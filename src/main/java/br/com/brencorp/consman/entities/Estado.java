@@ -1,9 +1,9 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -26,7 +26,7 @@ public class Estado implements Serializable {
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "estado")
-	private Set<Cidade> cidades = new HashSet<>();
+	private List<Cidade> cidades = new ArrayList<>();
 
 	public Estado() {
 	}
@@ -53,7 +53,7 @@ public class Estado implements Serializable {
 		this.uf = uf;
 	}
 
-	public Set<Cidade> getCidades() {
+	public List<Cidade> getCidades() {
 		return cidades;
 	}	
 	

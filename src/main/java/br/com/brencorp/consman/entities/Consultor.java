@@ -1,9 +1,12 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
-import java.util.HashSet;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,19 +39,19 @@ public class Consultor implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "consultor_formacao", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "formacao_id"))
-	private Set<FormacaoAcademica> formacoes = new HashSet<>();
+	private List<FormacaoAcademica> formacoes = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "consultor_profissao", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "profissao_id"))
-	private Set<Profissao> profissoes = new HashSet<>();
+	private List<Profissao> profissoes = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "consultor_projetos", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "projeto_id"))
-	private Set<Projeto> projetos = new HashSet<>();
+	private List<Projeto> projetos = new ArrayList<>();
 
 	@ManyToMany
 	@JoinTable(name = "consultor_cat", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "cat_id"))
-	private Set<Cat> cat = new HashSet<>();
+	private List<Cat> cat = new ArrayList<>();
 
 	public Consultor() {
 	}
@@ -130,19 +133,19 @@ public class Consultor implements Serializable {
 		this.cidade = cidade;
 	}
 
-	public Set<FormacaoAcademica> getFormacao() {
+	public List<FormacaoAcademica> getFormacao() {
 		return formacoes;
 	}
 
-	public Set<Profissao> getProfissao() {
+	public List<Profissao> getProfissao() {
 		return profissoes;
 	}
 
-	public Set<Projeto> getProjeto() {
+	public List<Projeto> getProjeto() {
 		return projetos;
 	}
 
-	public Set<Cat> getCat() {
+	public List<Cat> getCat() {
 		return cat;
 	}
 
@@ -161,5 +164,11 @@ public class Consultor implements Serializable {
 			return false;
 		Consultor other = (Consultor) obj;
 		return Objects.equals(id, other.id);
+	}
+
+	public int idade(String nascimento) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		Period periodo = Period.between(LocalDate.parse(nascimento, formatter), LocalDate.now());
+		return periodo.getYears();
 	}
 }

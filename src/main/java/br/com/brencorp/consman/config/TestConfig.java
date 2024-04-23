@@ -53,9 +53,10 @@ public class TestConfig implements CommandLineRunner {
 		FormacaoAcademica f1 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
 		FormacaoAcademica f2 = new FormacaoAcademica(null, "Engenharia de Software", "UPE", "Mestrado", 2023);
 		FormacaoAcademica f3 = new FormacaoAcademica(null, "Letras", "UNICAP", "Licenciatura", 2010);
-		FormacaoAcademica f4 = new FormacaoAcademica(null, "Gestão de Tecnologia da Informação", "CESAR School", "Tecnólogo", 2025);
+		FormacaoAcademica f4 = new FormacaoAcademica(null, "Administração", "CESAR School", "Tecnólogo", 2025);
+		FormacaoAcademica f5 = new FormacaoAcademica(null, "Administração", "UFPE", "Bacharelado", 2018);
 		
-		formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4));
+		formacaoAcademicaRepository.saveAll(Arrays.asList(f1, f2, f3, f4, f5));
 		
 		Profissao prof1 = new Profissao(null, "Desenvolvedor", "Backend");
 		Profissao prof2 = new Profissao(null, "Desenvolvedor", "Frontend");
@@ -90,8 +91,8 @@ public class TestConfig implements CommandLineRunner {
 
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
 		
-		Consultor cons1 = new Consultor(null, "00011122290", null, "Weynne Guimarães", "8188888888", "wjgcl@cesar.school", "24-09-1991", c2);
-		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "8199999999", "pcs2@cesar.school", "01-11-1999", c4);
+		Consultor cons1 = new Consultor(null, "00011122290", null, "Weynne Guimarães", "8188888888", "wjgcl@cesar.school", "24/09/1991", c2);
+		Consultor cons2 = new Consultor(null, "99911122290", null, "Pedro Silva", "8199999999", "pcs2@cesar.school", "01/11/1999", c4);
 		
 		consultorRepository.saveAll(Arrays.asList(cons1, cons2));
 		
