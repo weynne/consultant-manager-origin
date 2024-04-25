@@ -1,6 +1,7 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -104,4 +105,9 @@ public class FormacaoAcademica implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	public int tempoFormacao(int anoConclusao) {
+		LocalDate dataAtual = LocalDate.now();
+		int anoAtual = dataAtual.getYear();
+		return anoAtual - anoConclusao;
+	}
 }
