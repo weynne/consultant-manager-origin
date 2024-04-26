@@ -12,6 +12,7 @@ import br.com.brencorp.consman.entities.Estado;
 import br.com.brencorp.consman.repositories.EstadoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class EstadoService {
@@ -48,9 +49,13 @@ public class EstadoService {
 	}
 
 	public Estado update(Long id, Estado obj) {
+		try {
 		Estado entity = repository.getReferenceById(id);
 		updateData(entity, obj);
 		return repository.save(entity);
+		} catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(Estado entity, Estado obj) {
