@@ -25,6 +25,10 @@ public class EstadoService {
 	}
 	
 	public Estado insert(Estado obj) {
-		return repository.save(obj)
-;	}
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
 }
