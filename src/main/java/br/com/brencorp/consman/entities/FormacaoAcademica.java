@@ -88,6 +88,11 @@ public class FormacaoAcademica implements Serializable {
 		return consultores;
 	}
 
+	public Integer getTempoFormacao() {
+		int anoAtual = LocalDate.now().getYear();
+		return anoAtual - anoConclusao;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -105,9 +110,4 @@ public class FormacaoAcademica implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	public int tempoFormacao(int anoConclusao) {
-		LocalDate dataAtual = LocalDate.now();
-		int anoAtual = dataAtual.getYear();
-		return anoAtual - anoConclusao;
-	}
 }

@@ -1,3 +1,4 @@
+
 package br.com.brencorp.consman.config;
 
 import java.util.Arrays;

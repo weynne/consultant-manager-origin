@@ -23,4 +23,8 @@ public class EstadoService {
 		Optional<Estado> obj = repository.findById(id);
 		return obj.get();
 	}
+	
+	public Estado insert(Estado obj) {
+		return repository.save(obj)
+;	}
 }

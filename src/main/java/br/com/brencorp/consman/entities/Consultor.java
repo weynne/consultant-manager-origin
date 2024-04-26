@@ -149,6 +149,12 @@ public class Consultor implements Serializable {
 		return cat;
 	}
 
+	public int getIdadeAtual() {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		Period periodo = Period.between(LocalDate.parse(nascimento, formatter), LocalDate.now());
+		return periodo.getYears();
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -166,9 +172,4 @@ public class Consultor implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	public int idade(String nascimento) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		Period periodo = Period.between(LocalDate.parse(nascimento, formatter), LocalDate.now());
-		return periodo.getYears();
-	}
 }
