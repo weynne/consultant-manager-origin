@@ -31,4 +31,14 @@ public class EstadoService {
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
+	
+	public Estado update(Long id, Estado obj) {
+		Estado entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(Estado entity, Estado obj) {
+		entity.setUf(obj.getUf());
+	}
 }
