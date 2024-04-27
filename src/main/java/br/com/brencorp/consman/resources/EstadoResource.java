@@ -50,7 +50,7 @@ public class EstadoResource {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Estado> update(@PathVariable Long id, @RequestBody Estado obj) {
 		obj = service.update(id, obj);

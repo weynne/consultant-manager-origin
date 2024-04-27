@@ -50,10 +50,10 @@ public class EstadoService {
 
 	public Estado update(Long id, Estado obj) {
 		try {
-		Estado entity = repository.getReferenceById(id);
-		updateData(entity, obj);
-		return repository.save(entity);
-		} catch(EntityNotFoundException e) {
+			Estado entity = repository.getReferenceById(id);
+			updateData(entity, obj);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
