@@ -33,15 +33,14 @@ public class EstadoController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<EstadoDTO> findById(@PathVariable Long id) {
-		EstadoDTO obj = service.findById(id);
-		return ResponseEntity.ok(obj);
+		EstadoDTO estadoDTO = service.findById(id);
+		return ResponseEntity.ok(estadoDTO);
 	}
 
 	@PostMapping
 	public ResponseEntity<EstadoDTO> insert(@RequestBody EstadoDTO estadoDTO) {
 		estadoDTO = service.insert(estadoDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(estadoDTO.getId())
-				.toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(estadoDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(estadoDTO);
 	}
 

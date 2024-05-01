@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.entities.Cat;
+import br.com.brencorp.consman.dto.CatDTO;
 import br.com.brencorp.consman.services.CatService;
 
 @RestController
@@ -26,33 +26,33 @@ public class CatController {
 	private CatService service;
 
 	@GetMapping
-	public ResponseEntity<List<Cat>> findAll() {
-		List<Cat> list = service.findAll();
+	public ResponseEntity<List<CatDTO>> findAll() {
+		List<CatDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Cat> findById(@PathVariable Long id) {
-		Cat obj = service.findById(id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<CatDTO> findById(@PathVariable Long id) {
+		CatDTO catDTO = service.findById(id);
+		return ResponseEntity.ok(catDTO);
 	}
 
 	@PostMapping
-	public ResponseEntity<Cat> insert(@RequestBody Cat obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<CatDTO> insert(@RequestBody CatDTO catDTO) {
+		catDTO = service.insert(catDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(catDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(catDTO);
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<CatDTO> update(@PathVariable Long id, @RequestBody CatDTO catDTO) {
+		catDTO = service.update(id, catDTO);
+		return ResponseEntity.ok().body(catDTO);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Cat> update(@PathVariable Long id, @RequestBody Cat obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
 	}
 }

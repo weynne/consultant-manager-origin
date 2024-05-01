@@ -33,15 +33,14 @@ public class CidadeController {
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<CidadeDTO> findById(@PathVariable Long id) {
-		CidadeDTO obj = service.findById(id);
-		return ResponseEntity.ok(obj);
+		CidadeDTO cidadeDTO = service.findById(id);
+		return ResponseEntity.ok(cidadeDTO);
 	}
 
 	@PostMapping
 	public ResponseEntity<CidadeDTO> insert(@RequestBody CidadeDTO cidadeDTO) {
 		cidadeDTO = service.insert(cidadeDTO);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cidadeDTO.getId())
-				.toUri();
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cidadeDTO.getId()).toUri();
 		return ResponseEntity.created(uri).body(cidadeDTO);
 	}
 
