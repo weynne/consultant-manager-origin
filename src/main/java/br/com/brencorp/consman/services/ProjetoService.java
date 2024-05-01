@@ -1,13 +1,16 @@
 package br.com.brencorp.consman.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.com.brencorp.consman.dto.ProjetoDTO;
 import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.ProjetoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
@@ -20,19 +23,41 @@ public class ProjetoService {
 	@Autowired
 	private ProjetoRepository repository;
 
-	public List<Projeto> findAll() {
-		return repository.findAll();
+	@Transactional(readOnly = true)
+	public List<ProjetoDTO> findAll() {
+		List<Projeto> projetos = repository.findAll();
+		return projetos.stream().map(ProjetoDTO::new).collect(Collectors.toList());
 	}
 
-	public Projeto findById(Long id) {
-		Optional<Projeto> obj = repository.findById(id);
-		return obj.get();
+	@Transactional(readOnly = true)
+	public ProjetoDTO findById(Long id) {
+		Projeto projeto = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return new ProjetoDTO(projeto);
 	}
 
-	public Projeto insert(Projeto obj) {
-		return repository.save(obj);
+	@Transactional
+	public ProjetoDTO insert(ProjetoDTO projetoDTO) {
+		ModelMapper modelMapper = new ModelMapper();
+		Projeto projeto = modelMapper.map(projetoDTO, Projeto.class);
+		return new ProjetoDTO(repository.save(projeto));
 	}
 
+	@Transactional
+	public ProjetoDTO update(Long id, ProjetoDTO projetoDTO) {
+		try {
+			Projeto projeto = repository.getReferenceById(id);
+			updateProjeto(projeto, projetoDTO);
+			return new ProjetoDTO(repository.save(projeto));
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+
+	private void updateProjeto(Projeto projeto, ProjetoDTO projetoDTO) {
+		projeto.setDescricaoProjeto(projetoDTO.getDescricao());
+	}
+
+	@Transactional
 	public void delete(Long id) {
 		try {
 			if (repository.existsById(id)) {
@@ -45,19 +70,5 @@ public class ProjetoService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-	}
-
-	public Projeto update(Long id, Projeto obj) {
-		try {
-			Projeto entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-
-	private void updateData(Projeto entity, Projeto obj) {
-		entity.setDescricaoProjeto(obj.getDescricao());
 	}
 }

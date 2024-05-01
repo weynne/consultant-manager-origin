@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.entities.Projeto;
+import br.com.brencorp.consman.dto.ProjetoDTO;
 import br.com.brencorp.consman.services.ProjetoService;
 
 @RestController
@@ -26,33 +26,33 @@ public class ProjetoController {
 	private ProjetoService service;
 
 	@GetMapping
-	public ResponseEntity<List<Projeto>> findAll() {
-		List<Projeto> list = service.findAll();
+	public ResponseEntity<List<ProjetoDTO>> findAll() {
+		List<ProjetoDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Projeto> findById(@PathVariable Long id) {
-		Projeto obj = service.findById(id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<ProjetoDTO> findById(@PathVariable Long id) {
+		ProjetoDTO projetoDTO = service.findById(id);
+		return ResponseEntity.ok(projetoDTO);
 	}
 
 	@PostMapping
-	public ResponseEntity<Projeto> insert(@RequestBody Projeto obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<ProjetoDTO> insert(@RequestBody ProjetoDTO projetoDTO) {
+		projetoDTO = service.insert(projetoDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(projetoDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(projetoDTO);
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<ProjetoDTO> update(@PathVariable Long id, @RequestBody ProjetoDTO projetoDTO) {
+		projetoDTO = service.update(id, projetoDTO);
+		return ResponseEntity.ok().body(projetoDTO);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Projeto> update(@PathVariable Long id, @RequestBody Projeto obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
 	}
 }
