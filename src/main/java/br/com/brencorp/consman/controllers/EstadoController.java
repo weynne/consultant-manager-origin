@@ -38,10 +38,17 @@ public class EstadoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<EstadoDTO> insert(@RequestBody EstadoDTO obj) {
-		obj = service.insert(obj); 
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<EstadoDTO> insert(@RequestBody EstadoDTO estadoDTO) {
+		estadoDTO = service.insert(estadoDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(estadoDTO.getId())
+				.toUri();
+		return ResponseEntity.created(uri).body(estadoDTO);
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<EstadoDTO> update(@PathVariable Long id, @RequestBody EstadoDTO estadoDTO) {
+		estadoDTO = service.update(id, estadoDTO);
+		return ResponseEntity.ok().body(estadoDTO);
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -50,9 +57,4 @@ public class EstadoController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<EstadoDTO> update(@PathVariable Long id, @RequestBody EstadoDTO obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
-	}
 }

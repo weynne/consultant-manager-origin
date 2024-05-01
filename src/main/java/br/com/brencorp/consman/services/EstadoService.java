@@ -28,12 +28,11 @@ public class EstadoService {
 		List<Estado> estados = repository.findAll();
 		return estados.stream().map(EstadoDTO::new).collect(Collectors.toList());
 	}
-	
+
 	@Transactional(readOnly = true)
 	public EstadoDTO findById(Long id) {
 		Estado estado = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-		EstadoDTO dto = new EstadoDTO(estado);
-		return dto;
+		return new EstadoDTO(estado);
 	}
 
 	@Transactional
@@ -41,6 +40,21 @@ public class EstadoService {
 		ModelMapper modelMapper = new ModelMapper();
 		Estado estado = modelMapper.map(estadoDTO, Estado.class);
 		return new EstadoDTO(repository.save(estado));
+	}
+
+	@Transactional
+	public EstadoDTO update(Long id, EstadoDTO estadoDTO) {
+		try {
+			Estado estado = repository.getReferenceById(id);
+			updateEstado(estado, estadoDTO);
+			return new EstadoDTO(repository.save(estado));
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+
+	private void updateEstado(Estado estado, EstadoDTO estadoDTO) {
+		estado.setUf(estadoDTO.getUf());
 	}
 
 	@Transactional
@@ -58,18 +72,4 @@ public class EstadoService {
 		}
 	}
 
-	@Transactional
-	public EstadoDTO update(Long id, EstadoDTO estadoDTO) {
-		try {
-			Estado estado = repository.getReferenceById(id);
-			updateData(estado, estadoDTO);
-			return new EstadoDTO(repository.save(estado));
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-
-	private void updateData(Estado estado, EstadoDTO estadoDTO) {
-		estado.setUf(estadoDTO.getUf());
-	}
 }

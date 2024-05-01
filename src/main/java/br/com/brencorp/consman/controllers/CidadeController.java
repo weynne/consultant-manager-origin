@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.entities.Cidade;
+import br.com.brencorp.consman.dto.CidadeDTO;
 import br.com.brencorp.consman.services.CidadeService;
 
 @RestController
@@ -26,22 +26,29 @@ public class CidadeController {
 	private CidadeService service;
 
 	@GetMapping
-	public ResponseEntity<List<Cidade>> findAll() {
-		List<Cidade> list = service.findAll();
+	public ResponseEntity<List<CidadeDTO>> findAll() {
+		List<CidadeDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Cidade> findById(@PathVariable Long id) {
-		Cidade obj = service.findById(id);
+	public ResponseEntity<CidadeDTO> findById(@PathVariable Long id) {
+		CidadeDTO obj = service.findById(id);
 		return ResponseEntity.ok(obj);
 	}
 
 	@PostMapping
-	public ResponseEntity<Cidade> insert(@RequestBody Cidade obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<CidadeDTO> insert(@RequestBody CidadeDTO cidadeDTO) {
+		cidadeDTO = service.insert(cidadeDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cidadeDTO.getId())
+				.toUri();
+		return ResponseEntity.created(uri).body(cidadeDTO);
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<CidadeDTO> update(@PathVariable Long id, @RequestBody CidadeDTO cidadeDTO) {
+		cidadeDTO = service.update(id, cidadeDTO);
+		return ResponseEntity.ok().body(cidadeDTO);
 	}
 
 	@DeleteMapping(value = "/{id}")
@@ -50,9 +57,4 @@ public class CidadeController {
 		return ResponseEntity.noContent().build();
 	}
 
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Cidade> update(@PathVariable Long id, @RequestBody Cidade obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
-	}
 }

@@ -1,11 +1,8 @@
 package br.com.brencorp.consman.dto;
 
-import java.io.Serializable;
-
 import br.com.brencorp.consman.entities.Estado;
 
-public class EstadoDTO implements Serializable{
-	private static final long serialVersionUID = 1L;
+public class EstadoDTO {
 	
 	private Long id;
 	private String uf;
