@@ -1,13 +1,16 @@
 package br.com.brencorp.consman.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.com.brencorp.consman.dto.EstadoDTO;
 import br.com.brencorp.consman.entities.Estado;
 import br.com.brencorp.consman.repositories.EstadoRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
@@ -20,19 +23,27 @@ public class EstadoService {
 	@Autowired
 	private EstadoRepository repository;
 
-	public List<Estado> findAll() {
-		return repository.findAll();
+	@Transactional(readOnly = true)
+	public List<EstadoDTO> findAll() {
+		List<Estado> estados = repository.findAll();
+		return estados.stream().map(EstadoDTO::new).collect(Collectors.toList());
+	}
+	
+	@Transactional(readOnly = true)
+	public EstadoDTO findById(Long id) {
+		Estado estado = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		EstadoDTO dto = new EstadoDTO(estado);
+		return dto;
 	}
 
-	public Estado findById(Long id) {
-		Optional<Estado> obj = repository.findById(id);
-		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
+	@Transactional
+	public EstadoDTO insert(EstadoDTO estadoDTO) {
+		ModelMapper modelMapper = new ModelMapper();
+		Estado estado = modelMapper.map(estadoDTO, Estado.class);
+		return new EstadoDTO(repository.save(estado));
 	}
 
-	public Estado insert(Estado obj) {
-		return repository.save(obj);
-	}
-
+	@Transactional
 	public void delete(Long id) {
 		try {
 			if (repository.existsById(id)) {
@@ -45,20 +56,20 @@ public class EstadoService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-
 	}
 
-	public Estado update(Long id, Estado obj) {
+	@Transactional
+	public EstadoDTO update(Long id, EstadoDTO estadoDTO) {
 		try {
-			Estado entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);
+			Estado estado = repository.getReferenceById(id);
+			updateData(estado, estadoDTO);
+			return new EstadoDTO(repository.save(estado));
 		} catch (EntityNotFoundException e) {
 			throw new ResourceNotFoundException(id);
 		}
 	}
 
-	private void updateData(Estado entity, Estado obj) {
-		entity.setUf(obj.getUf());
+	private void updateData(Estado estado, EstadoDTO estadoDTO) {
+		estado.setUf(estadoDTO.getUf());
 	}
 }

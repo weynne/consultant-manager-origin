@@ -1,4 +1,4 @@
-package br.com.brencorp.consman.resources;
+package br.com.brencorp.consman.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -20,7 +20,7 @@ import br.com.brencorp.consman.services.FormacaoAcademicaService;
 
 @RestController
 @RequestMapping(value = "/formacoes")
-public class FormacaoAcademicaResource {
+public class FormacaoAcademicaController {
 
 	@Autowired
 	private FormacaoAcademicaService service;
@@ -28,7 +28,6 @@ public class FormacaoAcademicaResource {
 	@GetMapping
 	public ResponseEntity<List<FormacaoAcademica>> findAll() {
 		List<FormacaoAcademica> list = service.findAll();
-
 		return ResponseEntity.ok().body(list);
 	}
 

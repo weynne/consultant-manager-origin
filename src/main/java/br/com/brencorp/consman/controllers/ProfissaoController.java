@@ -1,4 +1,4 @@
-package br.com.brencorp.consman.resources;
+package br.com.brencorp.consman.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -15,31 +15,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.entities.Cat;
-import br.com.brencorp.consman.services.CatService;
+import br.com.brencorp.consman.entities.Profissao;
+import br.com.brencorp.consman.services.ProfissaoService;
 
 @RestController
-@RequestMapping(value = "/cat")
-public class CatResource {
+@RequestMapping(value = "/profissoes")
+public class ProfissaoController {
 
 	@Autowired
-	private CatService service;
+	private ProfissaoService service;
 
 	@GetMapping
-	public ResponseEntity<List<Cat>> findAll() {
-		List<Cat> list = service.findAll();
-
+	public ResponseEntity<List<Profissao>> findAll() {
+		List<Profissao> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Cat> findById(@PathVariable Long id) {
-		Cat obj = service.findById(id);
+	public ResponseEntity<Profissao> findById(@PathVariable Long id) {
+		Profissao obj = service.findById(id);
 		return ResponseEntity.ok(obj);
 	}
 
 	@PostMapping
-	public ResponseEntity<Cat> insert(@RequestBody Cat obj) {
+	public ResponseEntity<Profissao> insert(@RequestBody Profissao obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
@@ -52,7 +51,7 @@ public class CatResource {
 	}
 
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Cat> update(@PathVariable Long id, @RequestBody Cat obj) {
+	public ResponseEntity<Profissao> update(@PathVariable Long id, @RequestBody Profissao obj) {
 		obj = service.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}

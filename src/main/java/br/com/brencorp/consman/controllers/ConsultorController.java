@@ -1,4 +1,4 @@
-package br.com.brencorp.consman.resources;
+package br.com.brencorp.consman.controllers;
 
 import java.net.URI;
 import java.util.List;
@@ -20,7 +20,7 @@ import br.com.brencorp.consman.services.ConsultorService;
 
 @RestController
 @RequestMapping(value = "/consultores")
-public class ConsultorResource {
+public class ConsultorController {
 
 	@Autowired
 	private ConsultorService service;
@@ -28,7 +28,6 @@ public class ConsultorResource {
 	@GetMapping
 	public ResponseEntity<List<Consultor>> findAll() {
 		List<Consultor> list = service.findAll();
-
 		return ResponseEntity.ok().body(list);
 	}
 
