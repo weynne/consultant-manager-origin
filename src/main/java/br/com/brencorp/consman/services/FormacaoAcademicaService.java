@@ -1,13 +1,17 @@
 package br.com.brencorp.consman.services;
 
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.com.brencorp.consman.dto.FormacaoAcademicaDTO;
 import br.com.brencorp.consman.entities.FormacaoAcademica;
 import br.com.brencorp.consman.repositories.FormacaoAcademicaRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
@@ -20,19 +24,44 @@ public class FormacaoAcademicaService {
 	@Autowired
 	private FormacaoAcademicaRepository repository;
 
-	public List<FormacaoAcademica> findAll() {
-		return repository.findAll();
+	@Transactional(readOnly = true)
+	public List<FormacaoAcademicaDTO> findAll() {
+		List<FormacaoAcademica> formacoes = repository.findAll();
+		return formacoes.stream().map(FormacaoAcademicaDTO::new).collect(Collectors.toList());
 	}
 
-	public FormacaoAcademica findById(Long id) {
-		Optional<FormacaoAcademica> obj = repository.findById(id);
-		return obj.get();
+	@Transactional(readOnly = true)
+	public FormacaoAcademicaDTO findById(Long id) {
+		FormacaoAcademica formacao = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return new FormacaoAcademicaDTO(formacao);
 	}
 
-	public FormacaoAcademica insert(FormacaoAcademica obj) {
-		return repository.save(obj);
+	@Transactional
+	public FormacaoAcademicaDTO insert(FormacaoAcademicaDTO formacaoDTO) {
+		ModelMapper modelMapper = new ModelMapper();
+		FormacaoAcademica formacao = modelMapper.map(formacaoDTO, FormacaoAcademica.class);
+		return new FormacaoAcademicaDTO(repository.save(formacao));
 	}
 
+	@Transactional
+	public FormacaoAcademicaDTO update(Long id, FormacaoAcademicaDTO formacaoDTO) {
+		try {
+			FormacaoAcademica formacao = repository.getReferenceById(id);
+			updateFormacao(formacao, formacaoDTO);
+			return new FormacaoAcademicaDTO(repository.save(formacao));
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+
+	private void updateFormacao(FormacaoAcademica formacao, FormacaoAcademicaDTO formacaoDTO) {
+		formacao.setNome(formacaoDTO.getNome());
+		formacao.setInstituicao(formacaoDTO.getInstituicao());
+		formacao.setTipo(formacaoDTO.getTipo());
+		formacao.setAnoConclusao(formacaoDTO.getAnoConclusao());
+	}
+
+	@Transactional
 	public void delete(Long id) {
 		try {
 			if (repository.existsById(id)) {
@@ -45,23 +74,10 @@ public class FormacaoAcademicaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-
 	}
-
-	public FormacaoAcademica update(Long id, FormacaoAcademica obj) {
-		try {
-			FormacaoAcademica entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-
-	private void updateData(FormacaoAcademica entity, FormacaoAcademica obj) {
-		entity.setNome(obj.getNome());
-		entity.setInstituicao(obj.getInstituicao());
-		entity.setTipo(obj.getTipo());
-		entity.setAnoConclusao(obj.getAnoConclusao());
+	
+	public Integer calcularTempoFormacao(FormacaoAcademica formacao) {
+		int anoAtual = LocalDate.now().getYear();
+		return anoAtual - formacao.getAnoConclusao();
 	}
 }

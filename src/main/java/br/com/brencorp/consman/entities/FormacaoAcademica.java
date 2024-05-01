@@ -87,7 +87,7 @@ public class FormacaoAcademica implements Serializable {
 	public List<Consultor> getConsultores() {
 		return consultores;
 	}
-
+	
 	public Integer getTempoFormacao() {
 		int anoAtual = LocalDate.now().getYear();
 		return anoAtual - anoConclusao;
