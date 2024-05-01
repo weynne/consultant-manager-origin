@@ -55,5 +55,4 @@ public class EstadoController {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-
 }

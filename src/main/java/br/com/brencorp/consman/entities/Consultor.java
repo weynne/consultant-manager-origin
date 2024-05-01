@@ -171,5 +171,4 @@ public class Consultor implements Serializable {
 		Consultor other = (Consultor) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

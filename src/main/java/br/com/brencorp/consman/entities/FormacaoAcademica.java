@@ -109,5 +109,4 @@ public class FormacaoAcademica implements Serializable {
 		FormacaoAcademica other = (FormacaoAcademica) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

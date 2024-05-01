@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.entities.Profissao;
+import br.com.brencorp.consman.dto.ProfissaoDTO;
 import br.com.brencorp.consman.services.ProfissaoService;
 
 @RestController
@@ -26,33 +26,33 @@ public class ProfissaoController {
 	private ProfissaoService service;
 
 	@GetMapping
-	public ResponseEntity<List<Profissao>> findAll() {
-		List<Profissao> list = service.findAll();
+	public ResponseEntity<List<ProfissaoDTO>> findAll() {
+		List<ProfissaoDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Profissao> findById(@PathVariable Long id) {
-		Profissao obj = service.findById(id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<ProfissaoDTO> findById(@PathVariable Long id) {
+		ProfissaoDTO profissaoDTO = service.findById(id);
+		return ResponseEntity.ok(profissaoDTO);
 	}
 
 	@PostMapping
-	public ResponseEntity<Profissao> insert(@RequestBody Profissao obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<ProfissaoDTO> insert(@RequestBody ProfissaoDTO profissaoDTO) {
+		profissaoDTO = service.insert(profissaoDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(profissaoDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(profissaoDTO);
+	}
+
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<ProfissaoDTO> update(@PathVariable Long id, @RequestBody ProfissaoDTO profissaoDTO) {
+		profissaoDTO = service.update(id, profissaoDTO);
+		return ResponseEntity.ok().body(profissaoDTO);
 	}
 
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Profissao> update(@PathVariable Long id, @RequestBody Profissao obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
 	}
 }

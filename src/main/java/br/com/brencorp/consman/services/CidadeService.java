@@ -72,5 +72,4 @@ public class CidadeService {
 			throw new DatabaseException(e.getMessage());
 		}
 	}
-
 }

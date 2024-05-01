@@ -55,5 +55,4 @@ public class CidadeController {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-
 }

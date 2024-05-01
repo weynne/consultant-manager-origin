@@ -35,5 +35,4 @@ public class EstadoDTO {
 	public void setUf(String uf) {
 		this.uf = uf;
 	}
-
 }

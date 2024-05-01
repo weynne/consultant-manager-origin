@@ -73,5 +73,4 @@ public class Cat implements Serializable {
 		Cat other = (Cat) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

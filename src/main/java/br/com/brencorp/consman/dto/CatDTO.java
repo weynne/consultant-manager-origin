@@ -34,6 +34,5 @@ public class CatDTO {
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
-	}
-	
+	}	
 }

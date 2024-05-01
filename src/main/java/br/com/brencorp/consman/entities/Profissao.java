@@ -47,11 +47,11 @@ public class Profissao implements Serializable {
 		this.id = id;
 	}
 
-	public String getnome() {
+	public String getNome() {
 		return nome;
 	}
 
-	public void setnome(String nome) {
+	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
@@ -83,5 +83,4 @@ public class Profissao implements Serializable {
 		Profissao other = (Profissao) obj;
 		return Objects.equals(id, other.id);
 	}
-
 }

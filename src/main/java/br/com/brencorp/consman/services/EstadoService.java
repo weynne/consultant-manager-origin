@@ -71,5 +71,4 @@ public class EstadoService {
 			throw new DatabaseException(e.getMessage());
 		}
 	}
-
 }

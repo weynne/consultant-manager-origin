@@ -47,5 +47,4 @@ public class CidadeDTO {
 	public void setEstado(Estado estado) {
 		this.estado = estado;
 	}
-	
 }

@@ -45,7 +45,6 @@ public class ProjetoService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-
 	}
 
 	public Projeto update(Long id, Projeto obj) {
