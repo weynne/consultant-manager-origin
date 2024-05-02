@@ -34,7 +34,13 @@ public class CidadeService {
 		Cidade cidade = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new CidadeDTO(cidade);
 	}
-
+	
+	@Transactional(readOnly = true)
+	public List<CidadeDTO> findByNome(String nome) {
+		List<Cidade> cidades = repository.findByNomeContainingIgnoreCase(nome);
+		return cidades.stream().map(CidadeDTO::new).collect(Collectors.toList());
+	}
+	
 	@Transactional
 	public CidadeDTO insert(CidadeDTO cidadeDTO) {
 		ModelMapper modelMapper = new ModelMapper();
