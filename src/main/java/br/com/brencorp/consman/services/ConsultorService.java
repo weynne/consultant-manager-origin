@@ -1,13 +1,16 @@
 package br.com.brencorp.consman.services;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import br.com.brencorp.consman.dto.ConsultorDTO;
 import br.com.brencorp.consman.entities.Consultor;
 import br.com.brencorp.consman.repositories.ConsultorRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
@@ -20,19 +23,47 @@ public class ConsultorService {
 	@Autowired
 	private ConsultorRepository repository;
 
-	public List<Consultor> findAll() {
-		return repository.findAll();
+	@Transactional(readOnly = true)
+	public List<ConsultorDTO> findAll() {
+		List<Consultor> consultores = repository.findAll();
+		return consultores.stream().map(ConsultorDTO::new).collect(Collectors.toList());
 	}
 
-	public Consultor findById(Long id) {
-		Optional<Consultor> obj = repository.findById(id);
-		return obj.get();
+	@Transactional(readOnly = true)
+	public ConsultorDTO findById(Long id) {
+		Consultor consultor = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+		return new ConsultorDTO(consultor);
 	}
 
-	public Consultor insert(Consultor obj) {
-		return repository.save(obj);
+	@Transactional
+	public ConsultorDTO insert(ConsultorDTO consultorDTO) {
+		ModelMapper modelMapper = new ModelMapper();
+		Consultor consultor = modelMapper.map(consultorDTO, Consultor.class);
+		return new ConsultorDTO(repository.save(consultor));
 	}
 
+	@Transactional
+	public ConsultorDTO update(Long id, ConsultorDTO consultorDTO) {
+		try {
+			Consultor consultor = repository.getReferenceById(id);
+			updateConsultor(consultor, consultorDTO);
+			return new ConsultorDTO(repository.save(consultor));
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
+	}
+
+	private void updateConsultor(Consultor consultor, ConsultorDTO consultorDTO) {
+		consultor.setCpf(consultorDTO.getCpf());
+		consultor.setCnpj(consultorDTO.getCnpj());
+		consultor.setNome(consultorDTO.getNome());
+		consultor.setTelefone(consultorDTO.getTelefone());
+		consultor.setEmail(consultorDTO.getEmail());
+		consultor.setNascimento(consultorDTO.getNascimento());
+		consultor.setCidade(consultorDTO.getCidade());
+	}
+
+	@Transactional
 	public void delete(Long id) {
 		try {
 			if (repository.existsById(id)) {
@@ -45,26 +76,5 @@ public class ConsultorService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-
-	}
-
-	public Consultor update(Long id, Consultor obj) {
-		try {
-			Consultor entity = repository.getReferenceById(id);
-			updateData(entity, obj);
-			return repository.save(entity);
-		} catch (EntityNotFoundException e) {
-			throw new ResourceNotFoundException(id);
-		}
-	}
-
-	private void updateData(Consultor entity, Consultor obj) {
-		entity.setCpf(obj.getCpf());
-		entity.setCnpj(obj.getCnpj());
-		entity.setNome(obj.getNome());
-		entity.setTelefone(obj.getTelefone());
-		entity.setEmail(obj.getEmail());
-		entity.setNascimento(obj.getNascimento());
-		entity.setCidade(obj.getCidade());
 	}
 }

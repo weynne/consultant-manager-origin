@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import br.com.brencorp.consman.entities.Consultor;
+import br.com.brencorp.consman.dto.ConsultorDTO;
 import br.com.brencorp.consman.services.ConsultorService;
 
 @RestController
@@ -26,33 +26,32 @@ public class ConsultorController {
 	private ConsultorService service;
 
 	@GetMapping
-	public ResponseEntity<List<Consultor>> findAll() {
-		List<Consultor> list = service.findAll();
+	public ResponseEntity<List<ConsultorDTO>> findAll() {
+		List<ConsultorDTO> list = service.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Consultor> findById(@PathVariable Long id) {
-		Consultor obj = service.findById(id);
-		return ResponseEntity.ok(obj);
+	public ResponseEntity<ConsultorDTO> findById(@PathVariable Long id) {
+		ConsultorDTO consultorDTO = service.findById(id);
+		return ResponseEntity.ok(consultorDTO);
 	}
 
 	@PostMapping
-	public ResponseEntity<Consultor> insert(@RequestBody Consultor obj) {
-		obj = service.insert(obj);
-		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+	public ResponseEntity<ConsultorDTO> insert(@RequestBody ConsultorDTO consultorDTO) {
+		consultorDTO = service.insert(consultorDTO);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(consultorDTO.getId()).toUri();
+		return ResponseEntity.created(uri).body(consultorDTO);
 	}
 
+	@PutMapping(value = "/{id}")
+	public ResponseEntity<ConsultorDTO> update(@PathVariable Long id, @RequestBody ConsultorDTO consultorDTO) {
+		consultorDTO = service.update(id, consultorDTO);
+		return ResponseEntity.ok().body(consultorDTO);
+	}
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
-	}
-
-	@PutMapping(value = "/{id}")
-	public ResponseEntity<Consultor> update(@PathVariable Long id, @RequestBody Consultor obj) {
-		obj = service.update(id, obj);
-		return ResponseEntity.ok().body(obj);
 	}
 }
