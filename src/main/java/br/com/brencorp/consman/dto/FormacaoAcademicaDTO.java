@@ -1,29 +1,25 @@
 package br.com.brencorp.consman.dto;
 
 import br.com.brencorp.consman.entities.FormacaoAcademica;
-import br.com.brencorp.consman.services.FormacaoAcademicaService;
 
 public class FormacaoAcademicaDTO {
-	
+
 	private Long id;
 	private String nome;
 	private String instituicao;
 	private String tipo;
 	private Integer anoConclusao;
 	private Integer tempoFormacao;
-	
-	private FormacaoAcademicaService services;
 
 	public FormacaoAcademicaDTO() {
 	}
 
-	public FormacaoAcademicaDTO(Long id, String nome, String instituicao, String tipo, Integer anoConclusao, FormacaoAcademica formacaoAcademica) {
+	public FormacaoAcademicaDTO(Long id, String nome, String instituicao, String tipo, Integer anoConclusao) {
 		this.id = id;
 		this.nome = nome;
 		this.instituicao = instituicao;
 		this.tipo = tipo;
 		this.anoConclusao = anoConclusao;
-		this.tempoFormacao = services.calcularTempoFormacao(formacaoAcademica);
 	}
 
 	public FormacaoAcademicaDTO(FormacaoAcademica formacaoAcademica) {
@@ -74,7 +70,7 @@ public class FormacaoAcademicaDTO {
 	public void setAnoConclusao(Integer anoConclusao) {
 		this.anoConclusao = anoConclusao;
 	}
-	
+
 	public Integer getTempoFormacao() {
 		return tempoFormacao;
 	}

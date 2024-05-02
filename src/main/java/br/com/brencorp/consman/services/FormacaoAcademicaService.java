@@ -1,6 +1,5 @@
 package br.com.brencorp.consman.services;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,10 +73,5 @@ public class FormacaoAcademicaService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException(e.getMessage());
 		}
-	}
-	
-	public Integer calcularTempoFormacao(FormacaoAcademica formacao) {
-		int anoAtual = LocalDate.now().getYear();
-		return anoAtual - formacao.getAnoConclusao();
 	}
 }
