@@ -34,6 +34,12 @@ public class EstadoService {
 		Estado estado = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
 		return new EstadoDTO(estado);
 	}
+	
+	@Transactional(readOnly = true)
+	public List<EstadoDTO> findByUf(String uf) {
+		List<Estado> estados = repository.findByUfContainingIgnoreCase(uf);
+		return estados.stream().map(EstadoDTO::new).collect(Collectors.toList());
+	}
 
 	@Transactional
 	public EstadoDTO insert(EstadoDTO estadoDTO) {
