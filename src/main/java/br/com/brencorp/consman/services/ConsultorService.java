@@ -86,11 +86,7 @@ public class ConsultorService {
 		consultor.setEmail(consultorDTO.getEmail());
 		consultor.setNascimento(consultorDTO.getNascimento());
 		consultor.setCidade(consultorDTO.getCidade());
-		
-		for (FormacaoAcademica formacao : consultorDTO.getFormacoes()) {
-			
 		}
-	}
 
 	@Transactional
 	public void delete(Long id) {
