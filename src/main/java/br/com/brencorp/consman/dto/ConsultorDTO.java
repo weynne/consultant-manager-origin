@@ -1,7 +1,13 @@
 package br.com.brencorp.consman.dto;
 
+import java.util.List;
+
+import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.entities.Cidade;
 import br.com.brencorp.consman.entities.Consultor;
+import br.com.brencorp.consman.entities.FormacaoAcademica;
+import br.com.brencorp.consman.entities.Profissao;
+import br.com.brencorp.consman.entities.Projeto;
 
 public class ConsultorDTO {
 
@@ -12,14 +18,18 @@ public class ConsultorDTO {
 	private String telefone;
 	private String email;
 	private String nascimento;
+	private Integer idade;
 	private Cidade cidade;
-	private Integer idadeAtual;
+	
+	private List<FormacaoAcademica> formacoes;
+	private List<Profissao> profissoes;
+	private List<Projeto> projetos;
+	private List<Cat> cat;
 	
 	public ConsultorDTO() {
 	}
 
 	public ConsultorDTO(Long id, String cpf, String cnpj, String nome, String telefone, String email, String nascimento, Cidade cidade) {
-		super();
 		this.id = id;
 		this.cpf = cpf;
 		this.cnpj = cnpj;
@@ -38,8 +48,13 @@ public class ConsultorDTO {
 		telefone = consultor.getTelefone();
 		email = consultor.getEmail();
 		nascimento = consultor.getNascimento();
+		idade = consultor.getIdade();
 		cidade = consultor.getCidade();
-		idadeAtual = consultor.getIdadeAtual();
+		formacoes = consultor.getFormacao();
+		profissoes = consultor.getProfissao();
+		projetos = consultor.getProjeto();
+		cat = consultor.getCat();
+		
 	}
 
 	public Long getId() {
@@ -98,6 +113,10 @@ public class ConsultorDTO {
 		this.nascimento = nascimento;
 	}
 	
+	public Integer getIdade() {
+		return idade;
+	}
+
 	public Cidade getCidade() {
 		return cidade;
 	}
@@ -106,7 +125,19 @@ public class ConsultorDTO {
 		this.cidade = cidade;
 	}
 
-	public Integer getIdadeAtual() {
-		return idadeAtual;
+	public List<FormacaoAcademica> getFormacoes() {
+		return formacoes;
+	}
+
+	public List<Profissao> getProfissoes() {
+		return profissoes;
+	}
+
+	public List<Projeto> getProjetos() {
+		return projetos;
+	}
+
+	public List<Cat> getCat() {
+		return cat;
 	}
 }

@@ -1,19 +1,20 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import br.com.brencorp.consman.util.date.ConverteDataEmPeriodo;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "formacaoAcademica")
@@ -27,6 +28,9 @@ public class FormacaoAcademica implements Serializable {
 	private String instituicao;
 	private String tipo;
 	private Integer anoConclusao;
+	
+	@Transient
+	private Integer tempoFormacao;
 
 	@JsonIgnore
 	@ManyToMany(mappedBy = "formacoes")
@@ -83,14 +87,13 @@ public class FormacaoAcademica implements Serializable {
 	public void setAnoConclusao(Integer anoConclusao) {
 		this.anoConclusao = anoConclusao;
 	}
+	
+	public Integer getTempoFormacao() {
+		return ConverteDataEmPeriodo.tempoFormacao(this.anoConclusao);
+	}
 
 	public List<Consultor> getConsultores() {
 		return consultores;
-	}
-	
-	public Integer getTempoFormacao() {
-		int anoAtual = LocalDate.now().getYear();
-		return anoAtual - anoConclusao;
 	}
 
 	@Override

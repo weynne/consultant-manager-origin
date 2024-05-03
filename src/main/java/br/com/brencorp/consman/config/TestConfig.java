@@ -98,9 +98,14 @@ public class TestConfig implements CommandLineRunner {
 		consultorRepository.saveAll(Arrays.asList(cons1, cons2));
 		
 		cons1.getCat().add(cat4);
+		cons1.getCat().add(cat3);
 		cons1.getFormacao().add(f3);
+		cons1.getFormacao().add(f4);
 		cons1.getProfissao().add(prof2);
+		cons1.getProfissao().add(prof3);
 		cons1.getProjeto().add(p1);
+		cons1.getProjeto().add(p2);
+		cons1.getProjeto().add(p3);
 		
 		cons2.getCat().add(cat1);
 		cons2.getFormacao().add(f1);

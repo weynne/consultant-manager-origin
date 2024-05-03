@@ -1,14 +1,13 @@
 package br.com.brencorp.consman.entities;
 
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import br.com.brencorp.consman.util.date.ConverteDataEmPeriodo;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,6 +16,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "consultor")
@@ -32,24 +32,27 @@ public class Consultor implements Serializable {
 	private String telefone;
 	private String email;
 	private String nascimento;
+	
+	@Transient
+	private Integer idade;
 
 	@ManyToOne
 	@JoinColumn(name = "cidade_id")
 	private Cidade cidade;
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_formacao", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "formacao_id"))
 	private List<FormacaoAcademica> formacoes = new ArrayList<>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_profissao", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "profissao_id"))
 	private List<Profissao> profissoes = new ArrayList<>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_projetos", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "projeto_id"))
 	private List<Projeto> projetos = new ArrayList<>();
 
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "consultor_cat", joinColumns = @JoinColumn(name = "consultor_id"), inverseJoinColumns = @JoinColumn(name = "cat_id"))
 	private List<Cat> cat = new ArrayList<>();
 
@@ -124,6 +127,10 @@ public class Consultor implements Serializable {
 	public void setNascimento(String nascimento) {
 		this.nascimento = nascimento;
 	}
+	
+	public Integer getIdade() {
+		return ConverteDataEmPeriodo.idadeAtual(this.nascimento);
+	}
 
 	public Cidade getCidade() {
 		return cidade;
@@ -147,12 +154,6 @@ public class Consultor implements Serializable {
 
 	public List<Cat> getCat() {
 		return cat;
-	}
-
-	public int getIdadeAtual() {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		Period periodo = Period.between(LocalDate.parse(nascimento, formatter), LocalDate.now());
-		return periodo.getYears();
 	}
 
 	@Override

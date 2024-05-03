@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.brencorp.consman.dto.ConsultorDTO;
+import br.com.brencorp.consman.entities.Cat;
 import br.com.brencorp.consman.entities.Consultor;
+import br.com.brencorp.consman.entities.FormacaoAcademica;
+import br.com.brencorp.consman.entities.Profissao;
+import br.com.brencorp.consman.entities.Projeto;
 import br.com.brencorp.consman.repositories.ConsultorRepository;
 import br.com.brencorp.consman.services.exceptions.DatabaseException;
 import br.com.brencorp.consman.services.exceptions.ResourceNotFoundException;
@@ -39,6 +43,27 @@ public class ConsultorService {
 	public ConsultorDTO insert(ConsultorDTO consultorDTO) {
 		ModelMapper modelMapper = new ModelMapper();
 		Consultor consultor = modelMapper.map(consultorDTO, Consultor.class);
+
+		for (FormacaoAcademica formacao : consultorDTO.getFormacoes()) {
+			FormacaoAcademica formacoes = modelMapper.map(formacao, FormacaoAcademica.class);
+			consultor.getFormacao().add(formacoes);
+		}
+
+		for (Profissao profissao : consultorDTO.getProfissoes()) {
+			Profissao profissoes = modelMapper.map(profissao, Profissao.class);
+			consultor.getProfissao().add(profissoes);
+		}
+
+		for (Projeto projeto : consultorDTO.getProjetos()) {
+			Projeto projetos = modelMapper.map(projeto, Projeto.class);
+			consultor.getProjeto().add(projetos);
+		}
+
+		for (Cat cat : consultorDTO.getCat()) {
+			Cat cats = modelMapper.map(cat, Cat.class);
+			consultor.getCat().add(cats);
+		}
+		
 		return new ConsultorDTO(repository.save(consultor));
 	}
 
@@ -61,6 +86,10 @@ public class ConsultorService {
 		consultor.setEmail(consultorDTO.getEmail());
 		consultor.setNascimento(consultorDTO.getNascimento());
 		consultor.setCidade(consultorDTO.getCidade());
+		
+		for (FormacaoAcademica formacao : consultorDTO.getFormacoes()) {
+			
+		}
 	}
 
 	@Transactional
